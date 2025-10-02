@@ -1,0 +1,23 @@
+def addition(a, b):
+    return a + b
+
+def subtraction(a, b):
+    return a - b
+
+def multiplication(a, b):
+    return a * b
+
+def division(a, b):
+    if b == 0:
+        raise ZeroDivisionError("division by zero")
+    return a / b
+
+def power(a, b):
+    """Return a to the power of b (a ** b).
+
+    Works for ints and floats. Examples:
+        power(2, 3) -> 8
+        power(9, 0.5) -> 3.0
+    """
+    return a ** b
+def power(a, b)
