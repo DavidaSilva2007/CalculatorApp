@@ -1,19 +1,41 @@
 import math
 import pygame
-import random
 
-#Initialize pygame features
+# Initialization
 pygame.init()
 pygame.font.init()
 
-#Setting the FPS of pygame screen
-fps = 60
+# Screen Setup
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption('Da Calc')
+
+# Clock & FPS
+FPS = 60
 clock = pygame.time.Clock()
 
-#Setting font
-font = pygame.font.SysFont(None, 36)  
+# Font
+font = pygame.font.SysFont(None, 36)
 
-#Simple calculations
+# Colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+GRAY = (128, 128, 128)
+
+# Button Settings
+BUTTON_WIDTH = 80
+BUTTON_HEIGHT = 60
+PADDING = 10
+
+buttons = [
+    ["7", "8", "9", "/"],
+    ["4", "5", "6", "*"],
+    ["1", "2", "3", "-"],
+    ["0", ".", "=", "+"],
+    ["C", "√", "^", ""]
+]
+
+# Math functions
 def addition(a, b):
     return a + b
 
@@ -23,65 +45,48 @@ def subtraction(a, b):
 def multiplication(a, b):
     return a * b
 
-def division(a, b):
+def division(a, b): 
     if b == 0:
         return "Undefined"
-    else:    
-        return a / b
+    else:
+        a / b
 
 def power(a, b):
     return a ** b
 
-def sqrt(a):
-    math.sqrt(a)
+def sqrt(a): 
+    return math.sqrt(a)
 
-#Drawing buttons
+# Drawing Function
 def draw_buttons():
     pass
 
-#Button sizes
-button_width = 80
-button_height = 60
-padding = 10
-
-#Buttons
-buttons = [
-    ["7", "8", "9", "/"],
-    ["4", "5", "6", "*"],
-    ["1", "2", "3", "-"],
-    ["0", ".", "=", "+"],
-    ["C", "√", "^", ""]
-]
-
-#Setting colors
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-GRAY = (128, 128, 128)
-
-#Initialize app
-WIDTH, HEIGHT = 800, 600
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-
-pygame.display.set_caption('Da Calc')
-
-#Running pygame (Main loop)
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT: #Closes if user clicks close button
-            running = False
-
-    #Making background black
-    screen.fill(BLACK)
-
-    #Show FPS
-    real_fps = int(clock.get_fps()) #Gets current FPS
+def draw_fps():
+    real_fps = int(clock.get_fps())
     fps_text = font.render(f"FPS: {real_fps}", True, WHITE)
-    screen.blit(fps_text, (10, 10)) #Draws FPS at the top left
+    screen.blit(fps_text, (10, 10))
 
-    #Update display accoring to fps
-    pygame.display.flip()
-    clock.tick(fps)
+# Main loop
+def main():
+    running = True
+    while running:
+        # Handle even (run screen)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-#Quits the display
-pygame.quit()
+        # Paint Background
+        screen.fill(BLACK)
+
+        # Draw UI
+        draw_fps()
+
+        # Refresh Display
+        pygame.display.flip()
+        clock.tick(FPS)
+
+    pygame.quit()
+
+# Run
+if __name__ == "__main__":
+    main()
