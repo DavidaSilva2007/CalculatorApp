@@ -79,7 +79,7 @@ while running:
     fps_text = font.render(f"FPS: {real_fps}", True, WHITE)
     screen.blit(fps_text, (10, 10)) #Draws FPS at the top left
 
-
+    #Update display accoring to fps
     pygame.display.flip()
     clock.tick(fps)
 
