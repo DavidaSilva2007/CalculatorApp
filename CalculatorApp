@@ -35,6 +35,9 @@ buttons = [
     ["C", "√", "^", ""]
 ]
 
+#Number holder
+
+
 # Math functions
 def addition(a, b):
     return a + b
@@ -56,6 +59,10 @@ def power(a, b):
 
 def sqrt(a): 
     return math.sqrt(a)
+
+# Clearing function
+def clear():
+    pass
 
 # Drawing Function
 def draw_buttons():
