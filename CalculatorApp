@@ -6,7 +6,7 @@ pygame.init()
 pygame.font.init()
 
 # Screen Setup
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 600, 800
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Da Calc')
 
@@ -26,6 +26,7 @@ GRAY = (128, 128, 128)
 BUTTON_WIDTH = 80
 BUTTON_HEIGHT = 60
 PADDING = 10
+START_Y = 200
 
 buttons = [
     ["7", "8", "9", "/"],
@@ -35,8 +36,65 @@ buttons = [
     ["C", "√", "^", ""]
 ]
 
-#Number holder
+#Expression
+current_expression = ""
 
+#Making buttons
+buttons_rectangles = []
+
+def build_buttons():
+    global buttons_rectangles
+    buttons_rectangles = []
+    y = START_Y
+    for row in buttons:
+        x = 50
+        row_rects = []
+        for symbol in row:
+            rect = pygame.Rect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT)
+            row_rects.append((rect, symbol))
+            x += BUTTON_WIDTH + PADDING
+        y += BUTTON_HEIGHT + PADDING
+        buttons_rectangles += row_rects
+
+
+def draw_buttons():
+    for rect, symbol in buttons_rectangles  :
+        pygame.draw.rect(screen, GRAY, rect, border_radius=10)
+        text = font.render(symbol, True, WHITE)
+        txt_rect = text.get_rect(center=rect.center)
+        screen.blit(text, txt_rect)
+
+
+def draw_expression():
+    exp_text = font.render(current_expression, True, WHITE)
+    screen.blit(exp_text, (50, 100))
+
+
+def draw_fps():
+    real_fps = int(clock.get_fps())
+    fps_text = font.render(f"FPS: {real_fps}", True, WHITE)
+    screen.blit(fps_text, (10, 10))
+
+def handle_click(pos):
+    global current_expression
+    for rect, symbol in buttons_rectangles:
+        if rect.collidepoint(pos):
+            if symbol == "":
+                return
+            elif symbol == "C":
+                current_expression = ""
+            elif symbol == "=":
+                try:
+                    current_expression = str(eval(current_expression))
+                except:
+                    current_expression = "ERROR"
+            elif symbol == "√":
+                try:
+                    current_expression = str(math.sqrt(float(current_expression)))
+                except:
+                    current_expression = "ERROR"
+            else:
+                current_expression += symbol        
 
 # Math functions
 def addition(a, b):
@@ -52,7 +110,7 @@ def division(a, b):
     if b == 0:
         return "Undefined"
     else:
-        a / b
+        return a / b
 
 def power(a, b):
     return a ** b
@@ -64,10 +122,6 @@ def sqrt(a):
 def clear():
     pass
 
-# Drawing Function
-def draw_buttons():
-    pass
-
 def draw_fps():
     real_fps = int(clock.get_fps())
     fps_text = font.render(f"FPS: {real_fps}", True, WHITE)
@@ -75,6 +129,9 @@ def draw_fps():
 
 # Main loop
 def main():
+    global current_expression
+    build_buttons()
+
     running = True
     while running:
         # Handle even (run screen)
@@ -82,11 +139,16 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                handle_click(event.pos)
+
         # Paint Background
         screen.fill(BLACK)
 
         # Draw UI
         draw_fps()
+        draw_expression()
+        draw_buttons()
 
         # Refresh Display
         pygame.display.flip()
